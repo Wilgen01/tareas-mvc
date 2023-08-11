@@ -11,6 +11,8 @@ namespace tareas_mvc.Entidades
         public string Descripcion { get; set; }
         public string Orden { get; set;}
         public DateTime FechaCreacion { get; set; }
+        public List<Paso> Pasos { get; set; }
+        public List<ArchivoAdjunto> ArchivosAdjuntos { get; set; }
 
     }
 }
