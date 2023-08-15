@@ -88,5 +88,15 @@ namespace tareas_mvc.Controllers
             return RedirectToAction("login", "usuarios");
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        public ChallengeResult LoginExterno(string proovedor, string urlRetorno = null)
+        {
+            var urlRedirection = Url.Action("RegistrarUsuarioExterno", values: new {urlRetorno});
+            var propiedades  = signInManager.ConfigureExternalAuthenticationProperties(proovedor, urlRedirection);
+            return new ChallengeResult(proovedor, propiedades);
+        }
+
+
     }
 }
