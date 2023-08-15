@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using tareas_mvc.Models;
@@ -78,6 +79,13 @@ namespace tareas_mvc.Controllers
                 return View(model);
             }
 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+            return RedirectToAction("login", "usuarios");
         }
 
     }
