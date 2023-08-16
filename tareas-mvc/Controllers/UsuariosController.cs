@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tareas_mvc.Models;
+using tareas_mvc.Servicios;
 
 namespace tareas_mvc.Controllers
 {
@@ -101,16 +102,58 @@ namespace tareas_mvc.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Listado(string mensaje = null)
+        public async Task<IActionResult> Listado(string mensaje = null, string error = null)
         {
             var usuarios = await context.Users.Select(u => new UsuarioViewModel() { Email = u.Email}).ToListAsync();
 
             var modelo = new UsuariosListadoViewModel();
             modelo.Usuarios = usuarios;
             modelo.Mensaje = mensaje;
+            modelo.Error = error;
             return View(modelo);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> HacerAdmin(string email)
+        {
+            var usuario = await context.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
+
+            if (usuario is null)
+            {
+                return NotFound();
+            }
+
+            var belongToAdmin = await userManager.IsInRoleAsync(usuario, Constantes.RolAdmin);
+            if (belongToAdmin)
+            {
+                return RedirectToAction("Listado", routeValues: new { error = email + " ya pertenece a este rol" });
+            }
+
+            await userManager.AddToRoleAsync(usuario, Constantes.RolAdmin);
+
+            return RedirectToAction("Listado", routeValues: new {mensaje = "Rol asignado correctamente a " + email});
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoverAdmin(string email)
+        {
+            var usuario = await context.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
+
+            if (usuario is null)
+            {
+                return NotFound();
+            }
+
+            var belongToAdmin = await userManager.IsInRoleAsync(usuario, Constantes.RolAdmin);
+            if (!belongToAdmin)
+            {
+                return RedirectToAction("Listado", routeValues: new { error = email + " no pertenece a este rol" });
+            }
+
+            await userManager.RemoveFromRoleAsync(usuario, Constantes.RolAdmin);
+
+            return RedirectToAction("Listado", routeValues: new { mensaje = "Rol removido correctamente a " + email });
+        }
 
     }
 }

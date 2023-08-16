@@ -4,5 +4,7 @@
     {
         public List<UsuarioViewModel> Usuarios { get; set; }
         public string Mensaje { get; set; }
+        public string Error { get; set; }
+
     }
 }

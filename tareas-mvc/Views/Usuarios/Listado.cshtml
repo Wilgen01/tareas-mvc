@@ -7,6 +7,15 @@
 
 <h1>Listado de usuarios</h1>
 
+    
+
+@if (Model.Error is not null)
+{
+    <div class="alert alert-danger" role="alert">
+        @Model.Error
+    </div>
+}
+
 @if (Model.Mensaje is not null)
 {
     <div class="alert alert-success" role="alert">
