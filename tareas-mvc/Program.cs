@@ -29,7 +29,7 @@ builder.Services.PostConfigure<CookieAuthenticationOptions>(IdentityConstants.Ap
     options =>
     {
         options.LoginPath = "/usuarios/login";
-        options.AccessDeniedPath = "/usuarios/login";
+        options.AccessDeniedPath = "/home";
     });
 
 var app = builder.Build();
