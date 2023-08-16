@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using tareas_mvc.Models;
 
 namespace tareas_mvc.Controllers
@@ -10,11 +11,13 @@ namespace tareas_mvc.Controllers
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
+        private readonly ApplicationDbContext context;
 
-        public UsuariosController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public UsuariosController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ApplicationDbContext context)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.context = context;
         }
 
         [AllowAnonymous]
@@ -95,6 +98,17 @@ namespace tareas_mvc.Controllers
             var urlRedirection = Url.Action("RegistrarUsuarioExterno", values: new {urlRetorno});
             var propiedades  = signInManager.ConfigureExternalAuthenticationProperties(proovedor, urlRedirection);
             return new ChallengeResult(proovedor, propiedades);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Listado(string mensaje = null)
+        {
+            var usuarios = await context.Users.Select(u => new UsuarioViewModel() { Email = u.Email}).ToListAsync();
+
+            var modelo = new UsuariosListadoViewModel();
+            modelo.Usuarios = usuarios;
+            modelo.Mensaje = mensaje;
+            return View(modelo);
         }
 
 
