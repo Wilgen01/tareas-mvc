@@ -1,8 +1,58 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Listado tareas";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Mis Tareas</h1>
+    <button type="button" class="btn btn-primary mb-3" onclick="agregarNuevaTareaAlListado()">
+        Agregar Tarea
+    </button>
 </div>
+
+<div id="contenedor-listado-tareas" class="text-center">
+    <div class="text-start" data-bind="foreach: tareas">
+        <div name="tarea" class="border mb-2 p-2" style="cursor: pointer">
+            <div data-bind="text: titulo" class="fw-bold">
+            </div>
+        </div>
+    </div>
+
+    <div data-bind="visible: cargando" class="spinner-border">
+        <span class="visually-hidden">Cargando...</span>
+    </div>
+
+    <div data-bind="visible: noHayTareas">
+        No existen tareas para mostrar
+    </div>
+</div>
+
+
+@section Scripts{
+
+    <script>
+
+        function tareaListadoViewModelFn() {
+            var self = this;
+            self.tareas = ko.observableArray([]);
+            self.cargando = ko.observable(true);
+
+            self.noHayTareas = ko.pureComputed(function () {
+                if (self.cargando()) {
+                    return false;
+                }
+
+                return self.tareas().length === 0;
+            })
+        }
+
+        const tareasLostadoViewModel = new tareaListadoViewModelFn();
+
+        setTimeout(() => {
+            //tareasLostadoViewModel.tareas.push({ titulo: "Tarea 1" })
+            //tareasLostadoViewModel.tareas.push({ titulo: "Tarea 2" })
+            tareasLostadoViewModel.cargando(false)
+        }, 1000)
+
+        ko.applyBindings(tareasLostadoViewModel, document.getElementById('contenedor-listado-tareas'));
+    </script>
+}
