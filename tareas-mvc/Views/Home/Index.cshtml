@@ -14,6 +14,11 @@
         <div name="tarea" class="border mb-2 p-2" style="cursor: pointer">
             <div data-bind="text: titulo" class="fw-bold">
             </div>
+
+            <input type="text" name="titulo-tarea" autocomplete="off"
+                   data-bind="value: titulo, visible: esNuevo,
+                    attr: {'data-id': id},
+                    event: {focusout: manejarFocusoutTituloTarea}" />
         </div>
     </div>
 
@@ -28,6 +33,8 @@
 
 
 @section Scripts{
+
+    <script src="~/js/tareas.js" asp-append-version="true"></script>
 
     <script>
 
@@ -45,13 +52,22 @@
             })
         }
 
+        function tareaElementoListadoViewModel ({id, titulo}){
+            var self = this;
+            self.id = ko.observable(id);
+            self.titulo = ko.observable(titulo);
+            self.esNuevo = ko.pureComputed(function () {
+                return self.id() == 0;
+            })
+        }
+
         const tareasLostadoViewModel = new tareaListadoViewModelFn();
 
         setTimeout(() => {
             //tareasLostadoViewModel.tareas.push({ titulo: "Tarea 1" })
             //tareasLostadoViewModel.tareas.push({ titulo: "Tarea 2" })
             tareasLostadoViewModel.cargando(false)
-        }, 1000)
+        }, 100)
 
         ko.applyBindings(tareasLostadoViewModel, document.getElementById('contenedor-listado-tareas'));
     </script>
