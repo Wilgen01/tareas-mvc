@@ -10,7 +10,7 @@ namespace tareas_mvc.Entidades
         [Required]
         public string Titulo { get; set; }
         public string Descripcion { get; set; }
-        public string Orden { get; set;}
+        public int Orden { get; set;}
         public DateTime FechaCreacion { get; set; }
         public string UsuarioCreacionId { get; set; }
         public IdentityUser UsuarioCreacion { get; set; }
