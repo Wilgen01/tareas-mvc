@@ -63,11 +63,7 @@
 
         const tareasLostadoViewModel = new tareaListadoViewModelFn();
 
-        setTimeout(() => {
-            //tareasLostadoViewModel.tareas.push({ titulo: "Tarea 1" })
-            //tareasLostadoViewModel.tareas.push({ titulo: "Tarea 2" })
-            tareasLostadoViewModel.cargando(false)
-        }, 100)
+        obtenerTareas();
 
         ko.applyBindings(tareasLostadoViewModel, document.getElementById('contenedor-listado-tareas'));
     </script>

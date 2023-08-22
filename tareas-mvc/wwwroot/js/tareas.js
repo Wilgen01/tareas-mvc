@@ -25,3 +25,26 @@ async function manejarFocusoutTituloTarea(tarea) {
     }
 
 }
+
+async function obtenerTareas() {
+    tareasLostadoViewModel.cargando(true)
+
+    const respuesta = await fetch(urlTareas, {
+        method: 'GET',
+        headers: { "Content-Type": "application/json" }
+    })
+
+    if (!respuesta.ok) {
+        return
+    }
+
+    const json = await respuesta.json();
+    tareasLostadoViewModel.tareas([]);
+
+    json.forEach(valor => {
+        tareasLostadoViewModel.tareas.push(new tareaElementoListadoViewModel(valor))
+    })
+
+    tareasLostadoViewModel.cargando(false)
+
+}
