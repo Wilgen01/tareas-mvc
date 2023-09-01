@@ -106,3 +106,28 @@ async function editarTarea(tarea) {
         alert('Hubo un error')
     }
 }
+
+async function intentarBorrarTarea(tarea) {
+    const userConfirm = confirm(`Está seguro de que desea eliminar la tarea "${editarTareaVM.titulo().trim()}"`)
+
+    if (!userConfirm) return
+
+    await borrarTarea(tarea.id);
+
+    const indice = tareasLostadoViewModel.tareas().findIndex(t => t.id() == tarea.id)
+    tareasLostadoViewModel.tareas.splice(indice, 1)
+    modalEditarTareaBootstrap.hide();
+}
+
+async function borrarTarea(id) {
+    const respuesta = await fetch(`${urlTareas}/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    if (!respuesta.ok) {
+        alert('Hubo un error')
+    }
+}

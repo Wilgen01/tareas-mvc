@@ -97,5 +97,23 @@ namespace tareas_mvc.Controllers
             return Ok();
         }
 
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var usuarioId = servicioUsuarios.ObtenerUsuarioId();
+            var tareaEditar = await context.Tareas.FirstOrDefaultAsync(t => t.UsuarioCreacionId == usuarioId && t.Id == id);
+
+            if(tareaEditar == null)
+            {
+                return NotFound();
+            }
+
+            context.Remove(tareaEditar);
+
+            await context.SaveChangesAsync();
+
+            return Ok();
+        }
+
     }
 }
