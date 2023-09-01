@@ -76,3 +76,33 @@ async function manejarClickTarea(tarea) {
     modalEditarTareaBootstrap.show();
 
 }
+
+async function manejarCambioEditarTarea() {
+    if (!editarTareaVM.titulo().trim()) return 
+    const tarea = {
+        id: editarTareaVM.id,
+        titulo: editarTareaVM.titulo().trim(),
+        descripcion: editarTareaVM.descripcion()
+    }
+
+    await editarTarea(tarea);
+
+    const indice = tareasLostadoViewModel.tareas().findIndex(t => t.id() == tarea.id)
+    tareasLostadoViewModel.tareas()[indice].titulo(tarea.titulo)
+}
+
+async function editarTarea(tarea) {
+    const json = JSON.stringify(tarea);
+
+    const respuesta = await fetch(`${urlTareas}/${tarea.id}`, {
+        method: 'PUT',
+        body: json,
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    if (!respuesta.ok) {
+        alert('Hubo un error')
+    }
+}

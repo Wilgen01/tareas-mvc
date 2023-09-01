@@ -75,7 +75,27 @@ namespace tareas_mvc.Controllers
             }
 
             return tarea;
-        } 
+        }
+
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Put(int id, [FromBody] TareaEditarDTO tarea)
+        {
+            var usuarioId = servicioUsuarios.ObtenerUsuarioId();
+            var tareaEditar = await context.Tareas.FirstOrDefaultAsync(t => t.Id == id && t.UsuarioCreacionId == usuarioId);
+
+            if(tareaEditar == null)
+            {
+                return NotFound();
+            }
+
+            tareaEditar.Titulo = tarea.Titulo;
+            tareaEditar.Descripcion = tarea.Descripcion;
+
+            context.SaveChanges();
+
+            return Ok();
+        }
 
     }
 }
