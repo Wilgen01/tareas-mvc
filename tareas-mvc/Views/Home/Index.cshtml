@@ -31,6 +31,8 @@
     </div>
 </div>
 
+<partial name="_ModalEditarTarea" />
+
 
 @section Scripts{
 
@@ -38,6 +40,9 @@
 
     <script>
         const urlTareas = "/api/tareas"
+        const modalEditarTarea = document.getElementById('modal-editar-tarea');
+        const modalEditarTareaBootstrap = new bootstrap.Modal(modalEditarTarea);
+
         function tareaListadoViewModelFn() {
             var self = this;
             self.tareas = ko.observableArray([]);
@@ -72,5 +77,6 @@
         obtenerTareas();
 
         ko.applyBindings(tareasLostadoViewModel, document.getElementById('contenedor-listado-tareas'));
+        ko.applyBindings(editarTareaVM, document.getElementById('modal-editar-tarea'));
     </script>
 }

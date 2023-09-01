@@ -67,11 +67,12 @@ async function manejarClickTarea(tarea) {
         return
     }
 
-    editarTareaVM.id = tarea.id;
-    editarTareaVM.titulo(tarea.titulo);
-    editarTareaVM.descripcion(tarea.descripcion);
 
     const json = await respuesta.json();
-    console.log({json, editarTareaVM})
+    editarTareaVM.id = json.id;
+    editarTareaVM.titulo(json.titulo);
+    editarTareaVM.descripcion(json.descripcion);
+
+    modalEditarTareaBootstrap.show();
 
 }
