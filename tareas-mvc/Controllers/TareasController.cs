@@ -61,5 +61,21 @@ namespace tareas_mvc.Controllers
 
             return tarea;
         }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Tarea>> Get(int id)
+        {
+            var usuarioId = servicioUsuarios.ObtenerUsuarioId();
+
+            var tarea = await context.Tareas.FirstOrDefaultAsync(t => t.UsuarioCreacionId == usuarioId && t.Id == id);
+
+            if(tarea == null)
+            {
+                return NotFound();
+            }
+
+            return tarea;
+        } 
+
     }
 }

@@ -48,3 +48,30 @@ async function obtenerTareas() {
     tareasLostadoViewModel.cargando(false)
 
 }
+
+
+async function manejarClickTarea(tarea) {
+    if (tarea.esNuevo()) {
+        return;
+    }
+
+    const respuesta = await fetch(`${urlTareas}/${tarea.id()}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!respuesta.ok) {
+        alert('Hubo un error')
+        return
+    }
+
+    editarTareaVM.id = tarea.id;
+    editarTareaVM.titulo(tarea.titulo);
+    editarTareaVM.descripcion(tarea.descripcion);
+
+    const json = await respuesta.json();
+    console.log({json, editarTareaVM})
+
+}

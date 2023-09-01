@@ -11,7 +11,7 @@
 
 <div id="contenedor-listado-tareas" class="text-center">
     <div class="text-start" data-bind="foreach: tareas">
-        <div name="tarea" class="border mb-2 p-2" style="cursor: pointer">
+        <div name="tarea" class="border mb-2 p-2" style="cursor: pointer" data-bind="click: manejarClickTarea">
             <div data-bind="text: titulo" class="fw-bold">
             </div>
 
@@ -25,7 +25,7 @@
     <div data-bind="visible: cargando" class="spinner-border">
         <span class="visually-hidden">Cargando...</span>
     </div>
-
+        
     <div data-bind="visible: noHayTareas">
         No existen tareas para mostrar
     </div>
@@ -59,6 +59,12 @@
             self.esNuevo = ko.pureComputed(function () {
                 return self.id() == 0;
             })
+        }
+
+        const editarTareaVM = {
+            id: 0,
+            titulo: ko.observable(''),
+            descripcion: ko.observable('')
         }
 
         const tareasLostadoViewModel = new tareaListadoViewModelFn();
