@@ -17,7 +17,7 @@ async function manejarClickSalvarPaso(paso) {
     const data = obtenerCuerpoPeticionPaso(paso);
 
     if (esNuevo) {
-
+        await insertarPaso(paso, data, idTarea)
     }
 }
 

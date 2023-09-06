@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 using tareas_mvc;
 using tareas_mvc.Servicios;
 
@@ -16,6 +17,9 @@ var politicaDeAutorizacion = new AuthorizationPolicyBuilder(args)
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add(new AuthorizeFilter(politicaDeAutorizacion));
+}).AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("name =DefaultConnection"));
