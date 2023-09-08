@@ -6,6 +6,9 @@
 function manejarClickCancelarPaso(paso) {
     if (paso.esNuevo()) {
         editarTareaVM.pasos.pop();
+    } else {
+        paso.descripcion(paso.descripcionAnterior)
+        paso.modoEdicion(false)
     }
 }
 
@@ -41,4 +44,10 @@ function obtenerCuerpoPeticionPaso(paso) {
         descripcion: paso.descripcion(),
         realizado: paso.realizado()
     })
+}
+
+function manejarClickDescripcionPaso(paso) {
+    paso.modoEdicion(true);
+    paso.descripcionAnterior = paso.descripcion()
+    $("[name=txtPasoDescripcion]:visible").focus();
 }
